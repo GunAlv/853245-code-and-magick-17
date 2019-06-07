@@ -13,9 +13,12 @@ var BAR_GAP = 100;
 var TEXT_GAP = 25;
 var MAX_BAR_HEIGHT = 150;
 
-var renderCloud = function (ctx, x, y, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
+var renderRect = function (ctx, x, y, rectWith, rectHeight, color) {
+  if (color) {
+    ctx.fillStyle = color;
+  }
+
+  ctx.fillRect(x, y, rectWith, rectHeight);
 };
 
 var renderText = function (ctx, text, x, y) {
@@ -35,30 +38,29 @@ var getMaxElement = function (array) {
   return maxElement;
 };
 
-var getRandomColor = function (playerName) {
+var getRandomColorOfPlayer = function (playerName) {
   if (playerName === 'Вы') {
     return 'rgba(255, 0, 0, 1)';
-  } else {
-    var randomSaturation = (Math.random() * (1 - 0.1)) + 0.1;
-    return 'rgba(0, 0, 255, ' + randomSaturation + ')';
   }
+
+  var randomSaturation = Math.floor(Math.random() * (101 - 15) + 15);
+  return 'hsl(243, ' + randomSaturation + '%,' + ' 50%)';
 };
 
+
 window.renderStatistics = function (ctx, players, times) {
-  renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)'); // Отрисовка тени
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff'); // Отрисовка облака
+  renderRect(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, CLOUD_WIDTH, CLOUD_HEIGHT, 'rgba(0, 0, 0, 0.7)'); // Отрисовка тени
+  renderRect(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT, '#fff'); // Отрисовка облака
   renderText(ctx, 'Ура, вы победили!', CONGRATULATION_GAP, 40);
   renderText(ctx, 'Список результатов:', CONGRATULATION_GAP, 60);
 
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < players.length; i++) {
-    ctx.fillStyle = getRandomColor(players[i]);
-
     var timesText = Math.round(times[i]);
     var columnHeight = timesText * MAX_BAR_HEIGHT / maxTime;
 
-    ctx.fillRect(BAR_X + (BAR_GAP * i), BAR_Y, BAR_WIDTH, columnHeight * (-1));
+    renderRect(ctx, BAR_X + (BAR_GAP * i), BAR_Y, BAR_WIDTH, columnHeight * (-1), getRandomColorOfPlayer(players[i])); // Отрисовка колонок
     renderText(ctx, players[i], BAR_X + (BAR_GAP * i), BAR_Y + TEXT_GAP); // Отрисовка имен игроков
     renderText(ctx, timesText, BAR_X + (BAR_GAP * i), CLOUD_HEIGHT - columnHeight - TEXT_GAP); // Отрисовка времени их прохождения
   }
