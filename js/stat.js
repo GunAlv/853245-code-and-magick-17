@@ -10,9 +10,7 @@ var BAR_WIDTH = 40;
 var BAR_X = 140;
 var BAR_Y = 250;
 var BAR_GAP = 100;
-var NAME_Y = 270;
-var TEXT_GAP = 98;
-var TIME_GAP = 30;
+var TEXT_GAP = 25;
 var MAX_BAR_HEIGHT = 150;
 
 var renderCloud = function (ctx, x, y, color) {
@@ -46,7 +44,6 @@ var getRandomColor = function (playerName) {
   }
 };
 
-
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)'); // Отрисовка тени
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#fff'); // Отрисовка облака
@@ -62,7 +59,7 @@ window.renderStatistics = function (ctx, players, times) {
     var columnHeight = timesText * MAX_BAR_HEIGHT / maxTime;
 
     ctx.fillRect(BAR_X + (BAR_GAP * i), BAR_Y, BAR_WIDTH, columnHeight * (-1));
-    renderText(ctx, players[i], BAR_X + (TEXT_GAP * i), NAME_Y); // Отрисовка имен игроков
-    renderText(ctx, timesText, BAR_X + (TEXT_GAP * i), CLOUD_HEIGHT - columnHeight - TIME_GAP); // Отрисовка времени их прохождения
+    renderText(ctx, players[i], BAR_X + (BAR_GAP * i), BAR_Y + TEXT_GAP); // Отрисовка имен игроков
+    renderText(ctx, timesText, BAR_X + (BAR_GAP * i), CLOUD_HEIGHT - columnHeight - TEXT_GAP); // Отрисовка времени их прохождения
   }
 };
