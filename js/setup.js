@@ -39,29 +39,29 @@ var createWizardObject = function (array, wizardName, colorOfCoat, colorOfEye) {
     name: wizardName,
     coatColor: colorOfCoat,
     eyeColors: colorOfEye
-  }
+  };
 
   return array;
 };
 
-for (var i = 0; i < 4; i ++) { // Создать массив волшебников на основе сгенерированных объектов
+for (var i = 0; i < 4; i++) { // Создать массив волшебников на основе сгенерированных объектов
   var wizardObjest = createWizardObject(wizards[i], getRandomName()[i], mixArray(coatColors)[i], mixArray(eyeColors)[i]);
   wizards.push(wizardObjest);
-};
+}
 
 
-document.querySelector('.setup-similar').classList.remove('hidden');
-var similarListElement = document.querySelector('.setup-similar-list');
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+// document.querySelector('.setup-similar').classList.remove('hidden');
+// var similarListElement = document.querySelector('.setup-similar-list');
+// var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 
-var renderWizard = function (wizard) { // Отрисовать волшебника
-  var wizardElement = similarWizardTemplate.cloneNode(true);
-  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyeColors;
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+// var renderWizard = function (wizard) { // Отрисовать волшебника
+//   var wizardElement = similarWizardTemplate.cloneNode(true);
+//   wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+//   wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyeColors;
+//   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
 
-  return wizardElement;
-};
+//   return wizardElement;
+// };
 
 
