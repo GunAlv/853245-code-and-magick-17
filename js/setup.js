@@ -7,10 +7,10 @@ var removeClassHidden = function (element) {
 var userDialog = document.querySelector('.setup');
 var setupSimilar = userDialog.querySelector('.setup-similar');
 
-var wizardNames = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var wizardSurnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var eyeColors = ['black', 'red', 'blue', 'yellow', 'green'];
+var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYE_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var QUANTITY_WIZARD_OBJEST = 4;
 
 
@@ -27,10 +27,10 @@ var mixArray = function (array) { // Перемешать массив
 
 var getRandomName = function () { // Получить массив случайно смиксованных имен и фамилий
   var mixedNames = [];
-  var changedArrayOfNames = mixArray(wizardNames);
-  var changedArrayOfSurnames = mixArray(wizardSurnames);
+  var changedArrayOfNames = mixArray(WIZARD_NAMES);
+  var changedArrayOfSurnames = mixArray(WIZARD_SURNAMES);
 
-  for (var i = 0; i < wizardNames.length; i++) {
+  for (var i = 0; i < WIZARD_NAMES.length; i++) {
     mixedNames.push(changedArrayOfNames[i] + ' ' + changedArrayOfSurnames[i]);
   }
 
@@ -44,7 +44,7 @@ var createWizardObject = function (array, wizardName, colorOfCoat, colorOfEye) {
   array = {
     name: wizardName,
     coatColor: colorOfCoat,
-    eyeColors: colorOfEye
+    eyeColor: colorOfEye
   };
 
   return array;
@@ -52,7 +52,7 @@ var createWizardObject = function (array, wizardName, colorOfCoat, colorOfEye) {
 
 var createWizardArray = function (quantityOfObjects) { // Создать массив волшебников wizards на основе сгенерированных объектов
   for (var i = 0; i < quantityOfObjects; i++) {
-    var wizardObjest = createWizardObject(wizards[i], getRandomName()[i], mixArray(coatColors)[i], mixArray(eyeColors)[i]);
+    var wizardObjest = createWizardObject(wizards[i], getRandomName()[i], mixArray(COAT_COLORS)[i], mixArray(EYE_COLORS)[i]);
     wizards.push(wizardObjest);
   }
 
@@ -68,7 +68,7 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template').c
 var renderWizard = function (wizard) { // Отрисовать волшебника
   var wizardElement = similarWizardTemplate.cloneNode(true);
   wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyeColors;
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyeColor;
   wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
 
   return wizardElement;
@@ -76,7 +76,7 @@ var renderWizard = function (wizard) { // Отрисовать волшебни�
 
 var fragment = document.createDocumentFragment();
 
-var createSimilarWizards = function () {
+var createSimilarWizards = function () { // Создать похожих волшебников
   for (var i = 0; i < wizards.length; i++) {
     fragment.appendChild(renderWizard(wizards[i]));
   }
