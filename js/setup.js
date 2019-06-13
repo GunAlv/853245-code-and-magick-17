@@ -4,8 +4,10 @@ var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К
 var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYE_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
-var QUANTITY_WIZARD_OBJEST = 4;
-var wizards = [];
+var QUANTITY_WIZARDS = 4;
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+var similarListElement = document.querySelector('.setup-similar-list');
+
 
 var removeClassHidden = function (element) {
   element.classList.remove('hidden');
@@ -15,7 +17,7 @@ var userDialog = document.querySelector('.setup');
 var setupSimilar = userDialog.querySelector('.setup-similar');
 
 
-var getRandomIndex = function (array) { // Получить случайный индекс из массива
+var getRandomItem = function (array) { // Получить случайный элемент массива
   return array[Math.floor(Math.random() * array.length)];
 };
 
@@ -23,29 +25,27 @@ var reverseNameAndSurname = function () { // Поменять местами и�
   var randomNumber = Math.floor(Math.random() * 2);
 
   if (randomNumber === 1) {
-    return getRandomIndex(WIZARD_NAMES) + ' ' + getRandomIndex(WIZARD_SURNAMES);
+    return getRandomItem(WIZARD_NAMES) + ' ' + getRandomItem(WIZARD_SURNAMES);
   }
 
-  return getRandomIndex(WIZARD_SURNAMES) + ' ' + getRandomIndex(WIZARD_NAMES);
+  return getRandomItem(WIZARD_SURNAMES) + ' ' + getRandomItem(WIZARD_NAMES);
 };
 
 
-var generateWizards = function () { // Создать массив волшебников
-  for (var i = 0; i < QUANTITY_WIZARD_OBJEST; i++) {
+var generateWizards = function (count) { // Создать массив волшебников
+  var wizards = [];
+
+  for (var i = 0; i < count; i++) {
     wizards.push({
       name: reverseNameAndSurname(),
-      coatColor: getRandomIndex(COAT_COLORS),
-      eyeColor: getRandomIndex(EYE_COLORS)
+      coatColor: getRandomItem(COAT_COLORS),
+      eyeColor: getRandomItem(EYE_COLORS)
     });
   }
 
   return wizards;
 };
 
-
-// Далее функции создания волшебников на основе полученных данных
-
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 var renderWizard = function (wizard) { // Отрисовать волшебника
   var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -57,20 +57,22 @@ var renderWizard = function (wizard) { // Отрисовать волшебни�
   return wizardElement;
 };
 
-
-var similarListElement = document.querySelector('.setup-similar-list');
-
-var createSimilarWizards = function () { // Создать похожих волшебников
+var createFragment = function (wizards) { // Создать и заполнить фрагмент
   var fragment = document.createDocumentFragment();
-  generateWizards();
+
   for (var i = 0; i < wizards.length; i++) {
     fragment.appendChild(renderWizard(wizards[i]));
   }
 
-  similarListElement.appendChild(fragment);
+  return fragment;
 };
 
-createSimilarWizards();
+var addFragmentToDOM = function (count) { // Добавить фрагмент в разметку
+  similarListElement.appendChild(createFragment(generateWizards(count)));
+};
+
+addFragmentToDOM(QUANTITY_WIZARDS);
+
 
 removeClassHidden(userDialog);
 removeClassHidden(setupSimilar);
