@@ -67,11 +67,11 @@ var createFragment = function (wizards) { // Создать и заполнит�
   return fragment;
 };
 
-var addFragmentToDOM = function (count) { // Добавить фрагмент в разметку
-  similarListElement.appendChild(createFragment(generateWizards(count)));
+var addWizardsToDOM = function (wizards) { // Добавить волшебников в разметку
+  similarListElement.appendChild(createFragment(wizards));
 };
 
-addFragmentToDOM(QUANTITY_WIZARDS);
+addWizardsToDOM(generateWizards(QUANTITY_WIZARDS));
 
 
 removeClassHidden(userDialog);
