@@ -78,9 +78,18 @@ removeClassHidden(setupSimilar);
 
 // Функции открытия/закрытия модального окна
 
+
 var setupModal = document.querySelector('.setup');
+
+setupModal.classList.remove('hidden');
+
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = document.querySelector('.setup-close');
+
+var getDraggedElementPosition = function (draggedElement, top, left) { // Получить исходную позицию модального окна
+  draggedElement.style.top = top;
+  draggedElement.style.left = left;
+};
 
 var onModalEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
@@ -90,6 +99,8 @@ var onModalEscPress = function (evt) {
 
 var openModal = function () {
   removeClassHidden(setupModal);
+
+  getDraggedElementPosition(setupModal, '80px', '50%');
 
   document.addEventListener('keydown', onModalEscPress);
 };
@@ -169,3 +180,117 @@ wizardEyes.addEventListener('click', function () {
 wizardFireball.addEventListener('click', function () {
   getRandomColorForWizardPart(wizardFireball, 'backgroundColor', FIREBALL_COLORS, inputWizardFireball);
 });
+
+
+// Функция перетаскивания модального окна
+
+var userAvatar = document.querySelector('.upload');
+
+userAvatar.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var dragged = false;
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    dragged = true;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var setupModalTopPosition = (setupModal.offsetTop - shift.y) + 'px';
+    var setupModalLeftPosition = (setupModal.offsetLeft - shift.x) + 'px';
+
+    getDraggedElementPosition(setupModal, setupModalTopPosition, setupModalLeftPosition);
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+
+    if (dragged) {
+      var onUserAvatarUpload = function (uploadEvt) {
+        uploadEvt.preventDefault();
+        userAvatar.removeEventListener('click', onUserAvatarUpload);
+      };
+
+      userAvatar.addEventListener('click', onUserAvatarUpload);
+    }
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
+
+// // Функция перетаскивания артефактов
+
+var setupModalShop = setupModal.querySelector('.setup-artifacts-shop');
+
+setupModalShop.addEventListener('mousedown', function (evt) {
+
+  if (evt.target.tagName === 'IMG') {
+    var currentArtifact = evt.target;
+    currentArtifact.style.position = 'absolute';
+    currentArtifact.style.zIndex = '5';
+  }
+
+  var startCoords = {
+    x: currentArtifact.clientX,
+    y: currentArtifact.clientY
+  };
+
+  var onArtifactMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var currentArtifactTopPosition = (currentArtifact.offsetTop - shift.y) + 'px';
+    var currentArtifactLeftPosition = (currentArtifact.offsetLeft - shift.x) + 'px';
+
+    getDraggedElementPosition(currentArtifact, currentArtifactTopPosition, currentArtifactLeftPosition);
+  };
+
+  var onArtifactUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onArtifactMove);
+    document.removeEventListener('mouseup', onArtifactUp);
+
+    var artifactsSlot = setupModalShop.querySelectorAll('.setup-artifacts-cell');
+    var slotsBackpack = setupModal.querySelectorAll('.setup-artifacts > .setup-artifacts-cell');
+
+    // Звезда переносится в рюкзак только при клике. В ином случае она улетает в небытие
+    for (var i = 0; i < artifactsSlot.length; i++) {
+      artifactsSlot[i].removeChild(currentArtifact);
+      slotsBackpack[i].appendChild(currentArtifact);
+    }
+  };
+
+  document.addEventListener('mousemove', onArtifactMove);
+  document.addEventListener('mouseup', onArtifactUp);
+});
+
