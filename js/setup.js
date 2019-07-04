@@ -283,9 +283,10 @@ setupModalShop.addEventListener('mousedown', function (evt) {
     var artifactsSlot = setupModalShop.querySelectorAll('.setup-artifacts-cell');
     var slotsBackpack = setupModal.querySelectorAll('.setup-artifacts > .setup-artifacts-cell');
 
-    // Звезда переносится в рюкзак только при клике. В ином случае она улетает в небытие
+    // Код не работает, если элементов в магазине больше одного
     for (var i = 0; i < artifactsSlot.length; i++) {
       artifactsSlot[i].removeChild(currentArtifact);
+      getDraggedElementPosition(currentArtifact, 0, 0);
       slotsBackpack[i].appendChild(currentArtifact);
     }
   };
