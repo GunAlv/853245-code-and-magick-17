@@ -80,9 +80,6 @@ removeClassHidden(setupSimilar);
 
 
 var setupModal = document.querySelector('.setup');
-
-setupModal.classList.remove('hidden');
-
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = document.querySelector('.setup-close');
 
@@ -283,7 +280,6 @@ setupModalShop.addEventListener('mousedown', function (evt) {
     var artifactsSlot = setupModalShop.querySelectorAll('.setup-artifacts-cell');
     var slotsBackpack = setupModal.querySelectorAll('.setup-artifacts > .setup-artifacts-cell');
 
-    // Код не работает, если элементов в магазине больше одного
     for (var i = 0; i < artifactsSlot.length; i++) {
       artifactsSlot[i].removeChild(currentArtifact);
       getDraggedElementPosition(currentArtifact, 0, 0);
