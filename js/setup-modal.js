@@ -4,6 +4,7 @@
   var setupModal = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = document.querySelector('.setup-close');
+  var form = document.querySelector('.setup-wizard-form');
 
   window.getDraggedElementPosition = function (draggedElement, top, left) { // Получить исходную позицию модального окна
     draggedElement.style.top = top;
@@ -70,5 +71,14 @@
 
   userNameInput.addEventListener('focus', function () {
     document.removeEventListener('keydown', onModalEscPress);
+  });
+
+  var successfulSubmit = function (evt) {
+    window.addClass(setupModal, 'hidden');
+    evt.preventDefault();
+  };
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), successfulSubmit(evt), window.showError);
   });
 })();
