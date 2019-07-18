@@ -73,12 +73,12 @@
     document.removeEventListener('keydown', onModalEscPress);
   });
 
-  var successfulSubmit = function (evt) {
+  var successfulSubmit = function () {
     window.addClass(setupModal, 'hidden');
-    evt.preventDefault();
   };
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), successfulSubmit(evt), window.showError);
+    evt.preventDefault();
+    window.backend.save(new FormData(form), successfulSubmit, window.showError);
   });
 })();
