@@ -4,7 +4,7 @@
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = document.querySelector('.setup-similar-list');
   var setupSimilar = document.querySelector('.setup-similar');
-  var QUANTITY_WIZARDS = 4;
+  var CELLS_FOR_RENDERED_WIZARDS = 4;
 
   var renderWizard = function (wizard) { // Отрисовать волшебника
     var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -16,25 +16,27 @@
     return wizardElement;
   };
 
-  var createFragment = function (wizards, quantity) { // Создать и заполнить фрагмент
+  var createFragment = function (data) { // Создать и заполнить фрагмент
     var fragment = document.createDocumentFragment();
+    var quantity;
+
+    if (data.length > CELLS_FOR_RENDERED_WIZARDS) { // Проверка на тот случай, если сервер даст меньше 4 магов
+      quantity = CELLS_FOR_RENDERED_WIZARDS;
+    } else {
+      quantity = data.length;
+    }
 
     for (var i = 0; i < quantity; i++) {
-      var randomWizard = window.getRandomItem(wizards); // Получить случайного волшебника из массива волшебников
-      fragment.appendChild(renderWizard(randomWizard));
+      fragment.appendChild(renderWizard(data[i]));
     }
 
     return fragment;
   };
 
-  var addWizardsToDOM = function (wizards, quantity) { // Добавить волшебников в разметку
-    similarListElement.appendChild(createFragment(wizards, quantity));
-  };
-
-  var successHandler = function (wizards) { // Добавить в DOM волшебников из полученных от сервера данных
-    addWizardsToDOM(wizards, QUANTITY_WIZARDS);
+  var addWizardsToDOM = function (data) { // Добавить волшебников в разметку
     window.removeClass(setupSimilar, 'hidden');
+    similarListElement.appendChild(createFragment(data));
   };
 
-  window.backend.load(successHandler, window.showError);
+  window.addWizardsToDOM = addWizardsToDOM;
 })();

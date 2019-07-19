@@ -1,21 +1,28 @@
 'use strict';
 
 (function () {
+  var Code = {
+    SUCCESS: 200,
+    INVALID_REQUEST: 400,
+    NOT_FOUND_ERROR: 404,
+    SERVER_ERROR: 500
+  };
+
   var catchErrors = function (xhr, onLoad, onError) {
     var error;
 
     switch (xhr.status) {
-      case 200:
+      case Code.SUCCESS:
         onLoad(xhr.response);
         break;
 
-      case 400:
+      case Code.INVALID_REQUEST:
         error = 'Неверный запрос';
         break;
-      case 404:
+      case Code.NOT_FOUND_ERROR:
         error = 'Ничего не найдено';
         break;
-      case 500:
+      case Code.SERVER_ERROR:
         error = 'Ошибка сервера';
         break;
 
