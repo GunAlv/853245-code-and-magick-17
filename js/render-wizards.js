@@ -38,5 +38,16 @@
     similarListElement.appendChild(createFragment(data));
   };
 
-  window.addWizardsToDOM = addWizardsToDOM;
+  var removeWizardsFromDOM = function () {
+    var similarWizards = document.querySelectorAll('.setup-similar-item');
+
+    for (var i = 0; i < similarWizards.length; i++) {
+      similarWizards[i].remove();
+    }
+  };
+
+  window.wizards = {
+    addWizardsToDOM: addWizardsToDOM,
+    removeWizardsFromDOM: removeWizardsFromDOM
+  };
 })();

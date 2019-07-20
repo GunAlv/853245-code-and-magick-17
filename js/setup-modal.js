@@ -6,8 +6,6 @@
   var setupClose = document.querySelector('.setup-close');
   var form = document.querySelector('.setup-wizard-form');
 
-  setupModal.classList.remove('hidden')
-
   window.getDraggedElementPosition = function (draggedElement, top, left) { // Получить исходную позицию модального окна
     draggedElement.style.top = top;
     draggedElement.style.left = left;
